@@ -76,7 +76,7 @@ fn main() {
     
 
     // Actualización de un registro
-    diesel::update(posts.filter(id.eq(2)))
+    /* diesel::update(posts.filter(id.eq(2)))
         .set(title.eq("Nuevo título"))
         .get_result::<Post>(&conn)
         .expect("Error en el update");
@@ -85,8 +85,19 @@ fn main() {
     diesel::update(posts.filter(id.eq(2)))
         .set((body.eq("Nuevo body"), title.eq("Nuevo título")))
         .get_result::<Post>(&conn)
-        .expect("Error en el update");
+        .expect("Error en el update"); */
 
+
+
+    // Eliminar un registro
+    diesel::delete(posts.filter(id.eq(3)))
+        .execute(&conn)
+        .expect("Error en el delete.");
+
+    // Eliminar registros con REGEX
+    diesel::delete(posts.filter(slug.like("%-post%")))
+        .execute(&conn)
+        .expect("Error en el delete.");
 
 
     // SELECT * FROM posts;
