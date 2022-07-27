@@ -5,7 +5,7 @@ extern crate diesel;
 pub mod schema;
 pub mod models;
 
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, web, App, HttpResponse, HttpServer, Responder};
 
 use dotenv::dotenv;
 use std::env;
@@ -13,14 +13,26 @@ use std::env;
 use diesel::prelude::*;
 use diesel::pg::PgConnection;
 
-// Librerías para crear una conexión a la BBDD y compartirla en toda la aplicación
+pub type DbPool = r2d2::Pool<ConnectionManager<PgConnection>>;
 use diesel::r2d2::{self, ConnectionManager};
 use diesel::r2d2::Pool;
 
+use self::models::Post;
+use self::schema::posts::dsl::*;
+
 
 #[get("/")]
-async fn hello_wold() -> impl Responder {
-    HttpResponse::Ok().body("Hola Platzi!!!")
+async fn index(pool: web::Data<DbPool>) -> impl Responder {
+    // Traemos el POOL para disponer de la conexión a la BBDD
+    let conn = pool.get().expect("Problemas al traer el pool de conexión.");
+
+    // El 'match' responde en caso de éxito o error en la consulta
+    match web::block(move || {posts.load::<Post>(&conn)}).await {
+        Ok(data) => {
+            return HttpResponse::Ok().body(format!("{:?}", data));
+        },
+        Err(err) => HttpResponse::Ok().body("Error al recibir los datos.")
+    }
 }
 
 #[actix_web::main]
@@ -32,11 +44,10 @@ async fn main() -> std::io::Result<()> {
     let connection = ConnectionManager::<PgConnection>::new(db_url);
 
     // El POOL sirve para compartir la conexión con otros servicios
-    let pool = Pool::builder().build(connection).expect("No se pudo construir el Pool");
+    let pool = Pool::builder().build(connection).expect("No se pudo construir el Pool.");
 
     HttpServer::new(move || {
         // Compartimos el pool de conexión a cada endpoint
-        App::new().service(hello_wold).app_data(pool.clone())       
+        App::new().service(index).app_data(web::Data::new(pool.clone()))
     }).bind(("127.0.0.1", 8080)).unwrap().run().await
-
 }
