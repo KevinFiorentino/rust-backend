@@ -1,7 +1,7 @@
 use diesel::prelude::*;
 use super::schema::posts;
 
-// Permitimos a las estructuras convertirse y deconvertirse en formato JSON
+// Permitimos a las estructuras manipular datos en formato JSON
 use serde::{Deserialize, Serialize};
 
 // Estructura para obtener los registros completos desde la BBDD
