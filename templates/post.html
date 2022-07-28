@@ -4,13 +4,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://getbootstrap.com/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="/static/css/navbar-top-fixed.css" rel="stylesheet">
     <title>{{ post.title }}</title>
 </head>
 <body>
-    <div>
-        <h1>{{ post.title }}</h1>
-        <p>{{ post.body }}</p>
-        <a href="/">Volver</a>
-    </div>
+
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+    </nav>
+    <br><br><br>
+    <main class="container">
+        <div class="bg-light p-5 rounded">
+            <h1>{{ post.title }}</h1>
+            <p class="lead">{{ post.body }}</p>
+        </div>
+    </main>
+
+    <script src="https://getbootstrap.com/docs/5.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>
