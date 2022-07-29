@@ -1,0 +1,9 @@
+version: '3'
+services:
+  rust-backend:           # Nombre de la imagen
+    build: .              # Seleccionamos el Dockerfile en la raíz del proyecto
+    image: rust-backend
+    env_file:             # Leemos variables de entorno
+      - .env
+    ports:
+      - "8080:8080"       # El primer puerto es para ingresar desde el navegador, el segundo el puerto configurado en el .env
