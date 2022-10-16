@@ -1,5 +1,3 @@
-## Rust web application
+## Rust Web Application
 
-##### Docker + GitHub Actions + Heroku
-
-Proyecto creado en colaboración con el [Curso de Backend con Rust](https://platzi.com/cursos/rust-backend/?notification_id=2729385) de Platzi.
+Proyecto creado en colaboración con el [Curso Básico de Rust](https://platzi.com/cursos/rust-basico/) y [Curso de Backend con Rust](https://platzi.com/cursos/rust-backend/) de Platzi.
